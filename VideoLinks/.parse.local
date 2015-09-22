@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "VideoLinks": {
+      "applicationId": "1HkffPOwi6w1EX2U65C2TRSlGm7ut3omOqfxjeZs"
+    },
+    "_default": {
+      "link": "VideoLinks"
+    }
+  }
+}
