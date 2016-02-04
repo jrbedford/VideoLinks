@@ -2,6 +2,9 @@
 <html>
   <head>
     <script src="../lib/parse-1.6.2.js"></script> <!-- this works with ./ or ../ -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="eventVideoLinks.js"></script>
+<!--    <script type="text/javascript" src="keyMomentEntry.js"></script> -->
     <title>My ParseApp site</title>
     <style>
     body { font-family: Helvetica, Arial, sans-serif; }
@@ -12,33 +15,122 @@
     a { color: #5298fc; text-decoration: none; }
     </style>
   </head>
-  <body>
-	<div>
+  <body ng-app="eventVideoLinks">
+<!--	<div>
       <h1>Congratulations! You're already hosting with Parse.</h1>
       <p>To get started, edit this file at <em>public/index.html</em> and start adding static content.</p>
       <p id="testp"></p>
-    </div>
+  </div>
+-->
+  <div ng-controller="EventVideoLinksController as keyMoment">
+<!--ng-controller="EventVideoLinksController as keyMoment"-->
+<!--    1+2={{1 + 2}}
+    <br>
+    vmprop: {{keyMoment.vmprop}}-->
+    <br>
+    activities: {{keyMoment.activities}}
+    <br>
+    <!--testResults: {{keyMoment.testResults}}-->
+    <br>
+    <select ng-model="keyMoment.selectedActivity">
+      <option ng-repeat="activity in keyMoment.activities" value="{{activity.id}}">{{activity.get('activityName')}}</option>
+    </select>
+    <br>
+    <!--<select ng-model="keyMoment.selectedActivity" ng-options="activity as activity.get('activityName') for activity in keyMoment.activities track by ...">
+      <option ng-repeat="activity in keyMoment.activities" value="{{activity.id}}">{{activity.get('activityName')}}</option>
+    </select>-->
+    <br>
+    selectedActivity: {{keyMoment.selectedActivity}}
+    <br>
+<!--    <select>
+      <option ng-repeat="activity in keyMoment.activities">{{activity.activityName}}</option>
+    </select>
+-->
+    <br>
+    <!--description: {{keyMoment.description}} -->
+<!-- the following tests whether using a generic object works
+    <br>
+    <select ng-model="keyMoment.selectedActivity">
+      <option ng-repeat="activity in keyMoment.testResults" value="{{activity.objectId}}">{{activity.activityName}}</option>
+    </select>
+    <br>
+    selectedActivity: {{keyMoment.selectedActivity}}
+    <br>
+    <select>
+      <option ng-repeat="activity in keyMoment.testResults">{{activity.activityName}}</option>
+    </select>
+    <br>
+-->
+  </div>
     <script>
+      /// <reference path="../typings/tsd.d.ts" />
       
       Parse.initialize("1HkffPOwi6w1EX2U65C2TRSlGm7ut3omOqfxjeZs", "RI5TiK66heyNra1ul37eJosljJto7p3yUKR4hkkr");
 
 /* what i need to write
-MOBILE CLIENT:
-- collect info about a KeyMoment
-- (bg) get EventActivity info for dropdown list
-- save new KeyMoment to Parse
-- one page that doesn't need to reload? dynamic content? 
--- update the page w/ count of KeyMoment added this session? other info? last KeyMoment added's details?
--- some way to edit previous KeyMoment? or save for web client for now? maybe clickable link previous KeyMoment after save to bring it back for edit 
+
+starting w/ angular...
+- write everything in a single page for easy writing and testing, then split into modules / apps / controllers
 - 
 
 
+MOBILE CLIENT:
+(I think Angular Material can put things into different formats based on the screen size, so perhaps could just design this module once and wrap it multiple ways
+for mobile, and for web. Fewer pages is better!)
+-module: collect info about a KeyMoment -- 
+-- (bg) get EventActivity info for dropdown list
+--- add new EventActivity? in hidden box / button where on-click adds to the list and re-hides and refreshes
+---- this could check for similar and fail if there are any, and also print those that are similar
+-- save new KeyMoment to Parse
+-- one page that doesn't need to reload? dynamic content? 
+-- update the page w/ count of KeyMoment added this session? other info? last KeyMoment added's details?
+-- some way to edit previous KeyMoment? or save for web client for now? 
+--- maybe clickable link previous KeyMoment after save to bring it back for edit 
+
+- edit previously entered KeyMoment
+*/
+
+/*
+SERVICES (?) TO CREATE:
+
+get song names (activities)
+  at first this will come from Parse, but at some point could be configured to retrieve from Groupanizer
+
+create new song name
+  put into Parse, or for gpnzr link to that admin page (and have button for refresh)
+
+save keyMoment
+  Parse should be good about knowing when to create a new one and when to overwrite existing
+    may need some logic on this, though? 
+
+get recent keyMoment(s) 
+  for viewing or editing this session's
+
+
+
+
+
+?query keyMoments
+  for reporting
+    not really sure how to implement this... 
+    arguments for filters? 
+      set up standard queries / reports that are expected?
+      enable some kind of dynamic querying? ugh.
+
+*/
+
+
+/*
 WEB CLIENT:
 - add RecordingDevice
 -- need to figure out recorder config stuff -- json object with properties that inform how to handle videos
+
 - add VideoPart info
+
 - define new EventActivity
+
 - edit previous KeyMoment
+
 - run reports
 -- latest event's formatted moments
 -
@@ -53,41 +145,41 @@ BACK END:
 
 */             
 		 
-      /*var TestObject = Parse.Object.extend("TestObject");
-      var testObject = new TestObject();
-      testObject.save({foo: "bar"}).then(function(object) {
-        var msgbox = Windows.UI.Popups.MessageDialog("yay! it worked");
-        return msgbox.showAsync();
-      });
-      */
+      //var TestObject = Parse.Object.extend("TestObject");
+      //var testObject = new TestObject();
+      //testObject.save({foo: "bar"}).then(function(object) {
+      //  var msgbox = Windows.UI.Popups.MessageDialog("yay! it worked");
+      //  return msgbox.showAsync();
+      //});
+      
 		
-        var TestObject = Parse.Object.extend("TestObject");
-        var testObject = new TestObject();
-        testObject.save({"foo": "bar"}).then(function(results) {
+//        var TestObject = Parse.Object.extend("TestObject");
+//        var testObject = new TestObject();
+//        testObject.save({"foo": "bar"}).then(function(results) {
           //var msgbox = Windows.UI.Popups.MessageDialog("yay! it worked");
           //return msgbox.showAsync();
           
           //alert("saving it worked!");
           
-          console.log("it worked!");
+//          console.log("it worked!");
           
-        }, function(error) {
+//       }, function(error) {
           //document.getElementById("testp").innerHTML = "uh oh";
-          alert("saving it did NOT work...");
-        });
+//          alert("saving it did NOT work...");
+//        });
         
-        var query = new Parse.Query(TestObject);
+//        var query = new Parse.Query(TestObject);
           
-        query.descending("createdAt");
-        query.first({
-          success: function(object) {
-            document.getElementById("testp").innerHTML = object.get("foo");
-          },
-          error: function(error) {
-            document.getElementById("testp").innerHTML = "Error: " + error.code + " " + error.message;
-            alert("Error: " + error.code + " " + error.message);
-          }
-        });
+//        query.descending("createdAt");
+//        query.first({ // instead of using callbacks here within first(), use .then() instead?  i think pulled this from Parse docs
+//          success: function(object) {
+//           document.getElementById("testp").innerHTML = object.get("foo");
+//          },
+//          error: function(error) {
+//            document.getElementById("testp").innerHTML = "Error: " + error.code + " " + error.message;
+//            alert("Error: " + error.code + " " + error.message);
+//          }
+//        });
           
           
           
